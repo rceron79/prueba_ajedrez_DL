@@ -1,0 +1,60 @@
+    <div class="py-4">
+      <h2 class="text-center">Administración</h2>
+      <hr class="text-center" />
+
+      <table class="table table-dark table-striped md-3">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Años de experiencia</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody id="app">
+          <div>
+            <span class="visually-hidden">Loading...</span>
+            
+          </div>
+          
+        </tbody>
+      </table>
+      <a href="/" class="link">Volver al Home</a>
+    </div>
+
+<script>
+    const app = document.getElementById('app')
+    
+    const pintarDatos = (data) => {
+        
+        data.forEach(item => {
+          const estado = item.estado;
+            app.innerHTML += `
+            <tr>
+              <th scope="row">${item.id}</th>
+              <td><img src="/avatars/${item.foto}" width="60px" height="60px" alt="${item.foto}"></td>
+              <td>${item.nombre}</td>
+              <td>${item.anos_experiencia}</td>
+              <td>${item.especialidad}</td>
+              <td><input type="checkbox" ${item.estado} /></td>
+            </tr>
+            `
+        })
+    }
+    
+    window.document.addEventListener("DOMContentLoaded", async () => {
+        const res = await fetch("/api/v1/users", {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        const data = await res.json();
+        console.log(data);
+       
+        pintarDatos(data.users);
+    });
+   
+    
+</script>
